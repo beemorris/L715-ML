@@ -6,4 +6,6 @@ Assignment 3:
 	- How are we representing our features?
 		- Sparse vectors?
 			- arm.n has like 266 something training examples
-			
+	- word2vec: we're gonna use this
+		- we can import this
+	- we'll have a vector for each of things and for the n-gram ones we'll have to figure out how this is gonna work pointwise something? 			
