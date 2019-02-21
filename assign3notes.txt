@@ -1,0 +1,9 @@
+Assignment 3:
+	- SVMs
+	- Get all instances of the words in question and save them all as .txt files (< lexalt item = word>) --- this is training and test data
+		- The answer isn't in the test data
+		- Key file is y value for test
+	- How are we representing our features?
+		- Sparse vectors?
+			- arm.n has like 266 something training examples
+			
