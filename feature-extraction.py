@@ -60,30 +60,18 @@ def extract_features(data):
 	return res
 
 
-def read_dataset(file_path):
-	"""
-  File_path should be a string that represents the filepath 
-  where the movie dataset can be found
-
-  This returns an array of strings and an array of labels
-  """
-	neg_data = []
-	pos_data = []
-	for root, dirs, files in os.walk(file_path + "/neg"):
-		for file_name in files:
-			fp = open(os.path.join(root, file_name))
-			neg_data.append(fp.read())
-
-	for root, dirs, files in os.walk(file_path + "/pos"):
-		for file_name in files:
-			fp = open(os.path.join(root, file_name))
-			pos_data.append(fp.read())
-
-	neg_labels = np.repeat(-1, len(neg_data))
-	pos_labels = np.repeat(1, len(pos_data))
-	labels = np.concatenate([neg_labels, pos_labels])
-	data = neg_data + pos_data
-	return data, labels
+# This asks the user for the datafile that they want to extract features from.
+def getInputFile():
+	bad = True
+	while bad:
+		try:
+			fileName = input("Enter file name: ")
+			# Open file for input
+			f = open(fileName, "r")
+			bad = False
+		except Exception as err:
+			print("Please enter a valid file name:")
+	return f
 
 
 def main():
