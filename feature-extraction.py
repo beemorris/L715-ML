@@ -31,8 +31,6 @@ def extract_features(data):
   of both of these word groups in the given string. An additional feature is 
   used to signal if negation was present.
   """
-	positive_words = ['good', 'great', 'fantastic', 'excellent', 'worthwhile']
-	negative_words = ['bad', 'horrible', 'boring', 'terrible', 'uninteresting']
 	res = []
 	for entry in data:
 		toked_entry = word_tokenize(entry)
