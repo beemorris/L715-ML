@@ -33,28 +33,17 @@ def extract_features(data):
   """
 	res = []
 	for entry in data:
-		toked_entry = word_tokenize(entry)
-		neg_count = 0
-		pos_count = 0
-		negation_flag = 0
-		word_counts = Counter(toked_entry)
-		for word in negative_words:
-			if word in word_counts.keys():
-				neg_count += word_counts[word]
-
-		for word in positive_words:
-			if word in word_counts.keys():
-				pos_count += word_counts[word]
-
-		if 'not' in toked_entry:
-			negation_flag = 1
-
-		res_row = [neg_count, pos_count, negation_flag]
-		res.append(res_row)
+		vector = []
+		toked_entry = entry.split()
+		indexes = [i for i, item in enumerate(token_entry) if item.startswith('<head>')]
+		for i in indexes: # this should only have 1, the location of head
+			vector.append(token_entry[i-2:i] + token_entry[i+1:i+2])
+			# then we need to get the spacy vectors here
+		res.append(vector)
 
 	# This changes the list of lists into a more compact array
 	# representation that only stores non-zero values
-	res = csr_matrix(res)
+	#res = csr_matrix(res)
 	return res
 
 
