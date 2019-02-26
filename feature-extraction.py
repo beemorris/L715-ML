@@ -23,14 +23,8 @@ nlp = spacy.load('en_vectors_web_lg')
 
 def extract_features(data):
 	"""
-  data is a list of strings here where each string represents a document
-  that we're trying to determine the sentiment of.
-
-  This is a very simple feature extraction method that just takes a 
-  list of positive words, a list of negative words and then gets the count
-  of both of these word groups in the given string. An additional feature is 
-  used to signal if negation was present.
-  """
+    this gets vectors
+	"""
 	res = []
 	for entry in data:
 		vector = []

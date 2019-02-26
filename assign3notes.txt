@@ -15,4 +15,8 @@ Steps:
 	- then split on the XML tag
 	- this will give us a list of eaach instance and each instance is matched to a single line in the keys file
 	- then split on spaces and then getting the index of the word that starts with the head tag gives us a vector of the 2 words before and after
-	- 
+
+Tasks:
+	- Becca:
+	- Leah:
+	- Nils:
