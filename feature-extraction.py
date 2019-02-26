@@ -37,8 +37,12 @@ def extract_features(data):
 		toked_entry = entry.split()
 		indexes = [i for i, item in enumerate(token_entry) if item.startswith('<head>')]
 		for i in indexes: # this should only have 1, the location of head
-			vector.append(token_entry[i-2:i] + token_entry[i+1:i+2])
-			# then we need to get the spacy vectors here
+			# nlp turns each of the words into a vector
+			print(token_entry[i-2:i] + token_entry[i+1:i+2])
+			vector.append([nlp(x) for x in (token_entry[i-2:i] + token_entry[i+1:i+2])])
+			vector.append(vector[0] - vector[1]) # word-2 - word-1
+			vector.append(vector[1] - vector[2]) # word-1 - word+1
+			vector.append(vector[2] - vector[3]) # word+1 = word+2
 		res.append(vector)
 
 	# This changes the list of lists into a more compact array
