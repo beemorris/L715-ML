@@ -77,10 +77,10 @@ def main():
 	print("Extracting features...")
 	train_X = extract_features(train_text_data)
 	test_X = extract_features(test_text_data)
-	params = {'n_estimators': [10, 20, 30, 100],
-	          'criterion': ['gini', 'entropy']}
-	rf_model = rf(n_jobs=1)
-	model = GridSearchCV(rf_model, params, n_jobs=4, cv=5)
+	#params = {'n_estimators': [10, 20, 30, 100],
+	  #        'criterion': ['gini', 'entropy']}
+	svm_model = SVC(gamma='auto')
+	model = GridSearchCV(svm_model)
 	print("Training...")
 	model.fit(train_X, train_Y)
 	preds = model.predict(test_X)
