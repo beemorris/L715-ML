@@ -1,11 +1,3 @@
-"""
-#Let's do some NLP now!
-
-For this script, we'll be adding in:
-- dataset reading
-- feature extraction
-"""
-
 import sklearn
 import os
 import numpy as np
@@ -23,15 +15,6 @@ nlp = spacy.load('en_vectors_web_lg')
 
 
 def extract_features(data):
-	"""
-  data is a list of strings here where each string represents a document
-  that we're trying to determine the sentiment of.
-
-  This is a very simple feature extraction method that just takes a 
-  list of positive words, a list of negative words and then gets the count
-  of both of these word groups in the given string. An additional feature is 
-  used to signal if negation was present.
-  """
 	res = []
 	for entry in data:
 		vector = []
@@ -89,8 +72,4 @@ def main():
 
 if __name__ == '__main__':
 	main()
-
-# Modify extract_features to scale the positive and negative counts 
-# by the length of the document  
-# Make your own feature extraction method using extract_features as a template
 
