@@ -15,10 +15,19 @@ nlp = spacy.load('en_vectors_web_lg')
 
 
 def extract_features(data):
+	"""
+	data is a list of strings here where each string represents a document
+	that we're trying to determine the sentiment of.
+
+	This is a very simple feature extraction method that just takes a
+	list of positive words, a list of negative words and then gets the count
+	of both of these word groups in the given string. An additional feature is
+	used to signal if negation was present.
+	"""
 	res = []
 	for entry in data:
 		vector = []
-		toked_entry = entry.split()
+		token_entry = entry.split()
 		indexes = [i for i, item in enumerate(token_entry) if item.startswith('<head>')]
 		for i in indexes: # this should only have 1, the location of head
 			# nlp turns each of the words into a vector
@@ -36,34 +45,45 @@ def extract_features(data):
 
 
 # This asks the user for the datafile that they want to extract features from.
-def getInputFile():
+def get_input_file():
+	f = None
+	tf = None
 	bad = True
 	while bad:
 		try:
-			fileName = input("Enter file name: ")
+			file_name = input("Enter data file name: ")
 			# Open file for input
-			f = open(fileName, "r")
+			f = open(file_name, "r").read()
 			bad = False
 		except Exception as err:
 			print("Please enter a valid file name:")
-	return f.read()
+	bad = True
+	while bad:
+		try:
+			file_name = input("Enter data file name: ")
+			# Open file for input
+			tf = open(file_name, "r").readlines()
+			bad = False
+		except Exception as err:
+			print("Please enter a valid file name:")
+	return f, tf
 
 
 
 def main():
 	# Read in dataset
 	print("Reading in dataset...")
-	train_text_data, train_Y = read_dataset("aclImdb/train")
-	test_text_data, test_Y = read_dataset("aclImdb/test")
+	train_text_data, train_Y = get_input_file()
+	test_text_data, test_Y = get_input_file()
 	print(Counter(test_Y))
 	# Now we need to extract features from the text data
 	print("Extracting features...")
 	train_X = extract_features(train_text_data)
 	test_X = extract_features(test_text_data)
-	#params = {'n_estimators': [10, 20, 30, 100],
-	  #        'criterion': ['gini', 'entropy']}
-	svm_model = SVC(gamma='auto')
-	model = GridSearchCV(svm_model)
+	params = {'n_estimators': [10, 20, 30, 100],
+			  'criterion': ['gini', 'entropy']}
+	rf_model = rf(n_jobs=1)
+	model = GridSearchCV(rf_model, params, n_jobs=4, cv=5)
 	print("Training...")
 	model.fit(train_X, train_Y)
 	preds = model.predict(test_X)
@@ -72,4 +92,3 @@ def main():
 
 if __name__ == '__main__':
 	main()
-
