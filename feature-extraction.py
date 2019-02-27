@@ -9,6 +9,7 @@ For this script, we'll be adding in:
 import sklearn
 import os
 import numpy as np
+from sklearn import svm
 from sklearn.ensemble import RandomForestClassifier as rf
 from sklearn.utils import shuffle
 from sklearn.metrics import classification_report
@@ -62,7 +63,8 @@ def getInputFile():
 			bad = False
 		except Exception as err:
 			print("Please enter a valid file name:")
-	return f
+	return f.read()
+
 
 
 def main():
