@@ -48,7 +48,7 @@ def get_input_file():
 	bad = True
 	while bad:
 		try:
-			file_name = input("Enter data file name: ")
+			file_name = input("Enter keys file name: ")
 			# Open file for input
 			tf = open(file_name, "r").readlines()
 			bad = False
@@ -63,7 +63,7 @@ def main():
 	print("Reading in dataset...")
 	train_text_data, train_Y = get_input_file()
 	test_text_data, test_Y = get_input_file()
-	print(Counter(test_Y))
+	# print(Counter(test_Y))
 	# Now we need to extract features from the text data
 	print("Extracting features...")
 	# the [1:] is to exclude the first couple lines after splitting on <instance
