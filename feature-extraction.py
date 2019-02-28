@@ -66,15 +66,15 @@ def main():
 	print(Counter(test_Y))
 	# Now we need to extract features from the text data
 	print("Extracting features...")
-	train_X = extract_features(train_text_data)
+	# the [1:] is to exclude the first couple lines after splitting on <instance
+	train_X = extract_features(train_text_data.split('<instance')[1:])
 	test_X = extract_features(test_text_data)
-	# params = {'n_estimators': [10, 20, 30, 100],
-	#        'criterion': ['gini', 'entropy']}
+	# params = {'n_estimators': [10, 20, 30, 100],}
 	svm_model = SVC(gamma='auto')
-	model = GridSearchCV(svm_model)
+	# model = GridSearchCV(svm_model)
 	print("Training...")
-	model.fit(train_X, train_Y)
-	preds = model.predict(test_X)
+	svm_model.fit(train_X, train_Y)
+	preds = svm_model.predict(test_X)
 	print(classification_report(test_Y, preds, digits=6))
 
 
