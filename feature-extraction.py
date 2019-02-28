@@ -14,7 +14,7 @@ def extract_features(data):
         indexes = [i for i, item in enumerate(token_entry) if item.startswith('<head>')]
         for i in indexes: # this should only have 1, the location of head
             # nlp turns each of the words into a vector
-            print(token_entry[i-2:i] + token_entry[i+1:i+3])
+            #print(token_entry[i-2:i] + token_entry[i+1:i+3])
             vector.extend([nlp(x)[0].vector for x in (token_entry[i-2:i] + token_entry[i+1:i+3])])
             vector.append(vector[0] - vector[1]) # word-2 - word-1
             vector.append(vector[1] - vector[2]) # word-1 - word+1
@@ -30,7 +30,7 @@ def extract_features(data):
 def extract_keys(data):
     res = []
     for entry in data:
-        print(entry)
+        #print(entry)
         if 'U' in entry.split()[2:]:
             res.append([0,0,0]) # I'm making 0,0,0 the location of U
         else:
@@ -66,8 +66,8 @@ def get_input_file():
 def flatten(x,y):
     flat_x = []
     flat_y = []
-    for x, y in enumerate(zip(x, y)):
-        if len(test) > 1:
+    for x, y in zip(x, y):
+        if len(y) > 1:
             flat_x.append(x)
             flat_y.append(y[0])
             flat_x.append(x)
@@ -97,6 +97,8 @@ def main():
 
     train_X, train_Y = flatten(x=train_X, y=train_Y)
     test_X, test_Y = flatten(x=test_X, y=test_Y)
+
+    print(train_X.shape)
 
     # instantiate model
     svm_model = SVC(gamma='auto')
