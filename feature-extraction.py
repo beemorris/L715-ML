@@ -62,6 +62,7 @@ def get_input_file():
 			print("Please enter a valid file name:")
 	return f, tf
 
+
 def flatten(x,y):
 	flat_x = []
 	flat_y = {}
@@ -75,6 +76,7 @@ def flatten(x,y):
 
 
 def main():
+	train_X, train_Y = flatten(x = train_X, y = trainY)
 	# Read in dataset
 	print("Reading in dataset...")
 	train_text_data, train_Y = get_input_file()
@@ -88,13 +90,14 @@ def main():
 	# the [1:] is to exclude the first couple lines after splitting on <instance
 	train_X = extract_features(train_text_data.split('<instance')[1:])
 	test_X = extract_features(test_text_data)
-
+'''
 	# handle two answers
 	for i, train, test in enumerate(zip(train_X, train_Y)):
 		if len(test) > 1:
 			train_X.insert(i, train_X[i])
 			train_Y[i] = train_Y[i][0]
 			train_Y.insert(i, )
+'''
 
 
 	# instantiate model
