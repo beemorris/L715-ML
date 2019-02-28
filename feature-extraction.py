@@ -93,8 +93,8 @@ def main():
     train_X = extract_features(train_text_data.split('<instance')[1:])
     test_X = extract_features(test_text_data)
 
-    train_X, train_Y = flatten(x=train_X, y=trainY)
-    test_X, test_Y = flatten(x = test_X, test_Y)
+    train_X, train_Y = flatten(x=train_X, y=train_Y)
+    test_X, test_Y = flatten(x=test_X, y=test_Y)
 
     # instantiate model
     svm_model = SVC(gamma='auto')
