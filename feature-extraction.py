@@ -91,7 +91,9 @@ def main():
 
     # the [1:] is to exclude the first couple lines after splitting on <instance
     train_X = extract_features(train_text_data.split('<instance')[1:])
+    train_Y = extract_keys(train_Y)
     test_X = extract_features(test_text_data)
+    test_Y = extract_keys(test_Y)
 
     train_X, train_Y = flatten(x=train_X, y=train_Y)
     test_X, test_Y = flatten(x=test_X, y=test_Y)
