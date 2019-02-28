@@ -2,6 +2,7 @@
 from sklearn.svm import SVC
 from sklearn.metrics import classification_report
 import spacy
+import numpy as np
 
 nlp = spacy.load('en_vectors_web_lg')
 
@@ -75,7 +76,7 @@ def flatten(x,y):
         else:
             flat_x.append(x)
             flat_y.append(y[0])
-    return flat_x, flat_y
+    return np.array(flat_x), np.array(flat_y)
 
 
 def main():
@@ -92,13 +93,14 @@ def main():
     # the [1:] is to exclude the first couple lines after splitting on <instance
     train_X = extract_features(train_text_data.split('<instance')[1:])
     train_Y = extract_keys(train_Y)
-    test_X = extract_features(test_text_data)
+    test_X = extract_features(test_text_data.split('<instance')[1:])
     test_Y = extract_keys(test_Y)
 
     train_X, train_Y = flatten(x=train_X, y=train_Y)
     test_X, test_Y = flatten(x=test_X, y=test_Y)
 
     print(train_X.shape)
+    print(test_X.shape)
 
     # instantiate model
     svm_model = SVC(gamma='auto')
