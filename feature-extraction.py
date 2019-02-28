@@ -27,6 +27,11 @@ def extract_features(data):
 	#res = csr_matrix(res)
 	return res
 
+def extract_keys(data):
+	res = []
+	for entry in data:
+		res.append([x[x.index('%'):] for x in entry[2:]])
+
 
 # This asks the user for the datafile that they want to extract features from.
 def get_input_file():
@@ -59,13 +64,25 @@ def main():
 	print("Reading in dataset...")
 	train_text_data, train_Y = get_input_file()
 	test_text_data, test_Y = get_input_file()
+
 	# print(Counter(test_Y))
+
 	# Now we need to extract features from the text data
 	print("Extracting features...")
+
 	# the [1:] is to exclude the first couple lines after splitting on <instance
 	train_X = extract_features(train_text_data.split('<instance')[1:])
 	test_X = extract_features(test_text_data)
-	# params = {'n_estimators': [10, 20, 30, 100],}
+
+	# handle two answers
+	for i, train, test in enumerate(zip(train_X, train_Y)):
+		if len(test) > 1:
+			train_X.insert(i, train_X[i])
+			train_Y[i] = train_Y[i][0]
+			train_Y.insert(i, )
+
+
+	# instantiate model
 	svm_model = SVC(gamma='auto')
 	# model = GridSearchCV(svm_model)
 	print("Training...")
