@@ -1,4 +1,4 @@
-
+from copy import deepcopy
 from sklearn.svm import SVC
 from sklearn.metrics import classification_report
 import spacy
@@ -13,13 +13,13 @@ def extract_features(data):
         vector = []
         token_entry = entry.split()
         indexes = [i for i, item in enumerate(token_entry) if item.startswith('<head>')]
-        for i in indexes: # this should only have 1, the location of head
-            # nlp turns each of the words into a vector
-            #print(token_entry[i-2:i] + token_entry[i+1:i+3])
-            vector.extend([nlp(x)[0].vector for x in (token_entry[i-2:i] + token_entry[i+1:i+3])])
-            vector.append(vector[0] - vector[1]) # word-2 - word-1
-            vector.append(vector[1] - vector[2]) # word-1 - word+1
-            vector.append(vector[2] - vector[3]) # word+1 = word+2
+        i = indexes[0] # this should only have 1, the location of head
+        # nlp turns each of the words into a vector
+        #print(token_entry[i-2:i] + token_entry[i+1:i+3])
+        vector.extend([nlp(x)[0].vector for x in (token_entry[i-2:i] + token_entry[i+1:i+3])])
+        vector.append(vector[0] - vector[1]) # word-2 - word-1
+        vector.append(vector[1] - vector[2]) # word-1 - word+1
+        vector.append(vector[2] - vector[3]) # word+1 = word+2
             # print(vector)
         res.append(vector)
 
@@ -68,15 +68,16 @@ def flatten(x,y):
     flat_x = []
     flat_y = []
     for x, y in zip(x, y):
+        print(y)
         if len(y) > 1:
-            flat_x.append(x)
-            flat_y.append(y[0])
-            flat_x.append(x)
-            flat_y.append(y[1])
+            flat_x.append(deepcopy(x))
+            flat_y.append(deepcopy(y[0]))
+            flat_x.append(deepcopy(x))
+            flat_y.append(deepcopy(y[1]))
         else:
-            flat_x.append(x)
-            flat_y.append(y[0])
-    return np.array(flat_x), np.array(flat_y)
+            flat_x.append(deepcopy(x))
+            flat_y.append(deepcopy(y[0]))
+    return np.stack(flat_x), np.stack(flat_y)
 
 
 def main():
@@ -95,12 +96,15 @@ def main():
     train_Y = extract_keys(train_Y)
     test_X = extract_features(test_text_data.split('<instance')[1:])
     test_Y = extract_keys(test_Y)
-
+    #print('train:', train_X[0])
+    #print('test:', test_X[0])
+    for x in train_Y:
+        print(np.array(x).shape)
     train_X, train_Y = flatten(x=train_X, y=train_Y)
     test_X, test_Y = flatten(x=test_X, y=test_Y)
 
-    print(train_X.shape)
-    print(test_X.shape)
+    #print('train: ', train_X[0])
+    #print('test: ', test_X[0])
 
     # instantiate model
     svm_model = SVC(gamma='auto')
