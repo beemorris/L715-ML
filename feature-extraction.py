@@ -1,7 +1,7 @@
 import sklearn
 import os
 import numpy as np
-from sklearn import svm
+from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier as rf
 from sklearn.utils import shuffle
 from sklearn.metrics import classification_report
