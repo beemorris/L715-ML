@@ -2,11 +2,8 @@ import sklearn
 import os
 import numpy as np
 from sklearn.svm import SVC
-from sklearn.ensemble import RandomForestClassifier as rf
-from sklearn.utils import shuffle
 from sklearn.metrics import classification_report
 from nltk.tokenize import word_tokenize
-from scipy.sparse import csr_matrix
 from collections import Counter
 from sklearn.model_selection import GridSearchCV
 import spacy
@@ -18,7 +15,7 @@ def extract_features(data):
 	res = []
 	for entry in data:
 		vector = []
-		toked_entry = entry.split()
+		token_entry = entry.split()
 		indexes = [i for i, item in enumerate(token_entry) if item.startswith('<head>')]
 		for i in indexes: # this should only have 1, the location of head
 			# nlp turns each of the words into a vector
@@ -36,40 +33,50 @@ def extract_features(data):
 
 
 # This asks the user for the datafile that they want to extract features from.
-def getInputFile():
+def get_input_file():
+	f = None
+	tf = None
 	bad = True
 	while bad:
 		try:
-			fileName = input("Enter file name: ")
+			file_name = input("Enter data file name: ")
 			# Open file for input
-			f = open(fileName, "r")
+			f = open(file_name, "r").read()
 			bad = False
 		except Exception as err:
 			print("Please enter a valid file name:")
-	return f.read()
+	bad = True
+	while bad:
+		try:
+			file_name = input("Enter keys file name: ")
+			# Open file for input
+			tf = open(file_name, "r").readlines()
+			bad = False
+		except Exception as err:
+			print("Please enter a valid file name:")
+	return f, tf
 
 
 
 def main():
 	# Read in dataset
 	print("Reading in dataset...")
-	train_text_data, train_Y = read_dataset("aclImdb/train")
-	test_text_data, test_Y = read_dataset("aclImdb/test")
-	print(Counter(test_Y))
+	train_text_data, train_Y = get_input_file()
+	test_text_data, test_Y = get_input_file()
+	# print(Counter(test_Y))
 	# Now we need to extract features from the text data
 	print("Extracting features...")
-	train_X = extract_features(train_text_data)
+	# the [1:] is to exclude the first couple lines after splitting on <instance
+	train_X = extract_features(train_text_data.split('<instance')[1:])
 	test_X = extract_features(test_text_data)
-	#params = {'n_estimators': [10, 20, 30, 100],
-	  #        'criterion': ['gini', 'entropy']}
+	# params = {'n_estimators': [10, 20, 30, 100],}
 	svm_model = SVC(gamma='auto')
-	model = GridSearchCV(svm_model)
+	# model = GridSearchCV(svm_model)
 	print("Training...")
-	model.fit(train_X, train_Y)
-	preds = model.predict(test_X)
+	svm_model.fit(train_X, train_Y)
+	preds = svm_model.predict(test_X)
 	print(classification_report(test_Y, preds, digits=6))
 
 
 if __name__ == '__main__':
 	main()
-
