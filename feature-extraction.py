@@ -62,6 +62,16 @@ def get_input_file():
 			print("Please enter a valid file name:")
 	return f, tf
 
+def flatten(x,y):
+	flat_x = []
+	flat_y = {}
+	for i, x, y in enumerate(zip(x, y)):
+		if len(test) > 1:
+			x.insert(i, x[i])
+			y[i] = y[i][0]
+			y.insert(i, )
+
+	return flat_x, flat_y
 
 
 def main():
