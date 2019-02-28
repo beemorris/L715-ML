@@ -65,12 +65,14 @@ def get_input_file():
 
 def flatten(x,y):
 	flat_x = []
-	flat_y = {}
+	flat_y = []
 	for i, x, y in enumerate(zip(x, y)):
 		if len(test) > 1:
 			x.insert(i, x[i])
 			y[i] = y[i][0]
-			y.insert(i, )
+			y.insert(i, ) #this isn't done and Idk what to put here, my brain is dying
+			flat_x.append()
+			flat_y.append()
 
 	return flat_x, flat_y
 
