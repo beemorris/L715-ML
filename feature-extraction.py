@@ -19,7 +19,7 @@ def extract_features(data):
 			vector.append(vector[0] - vector[1]) # word-2 - word-1
 			vector.append(vector[1] - vector[2]) # word-1 - word+1
 			vector.append(vector[2] - vector[3]) # word+1 = word+2
-			print(len(vector))
+			# print(vector)
 		res.append(vector)
 
 	# This changes the list of lists into a more compact array
@@ -30,7 +30,12 @@ def extract_features(data):
 def extract_keys(data):
 	res = []
 	for entry in data:
-		res.append([x[x.index('%'):] for x in entry[2:]])
+		print(entry)
+		if 'U' in entry.split()[2:]:
+			res.append([0,0,0]) # I'm making 0,0,0 the location of U
+		else:
+			res.append([[int(nums) for nums in x[x.index('%')+1:].split(':') if len(nums.strip()) > 0] for x in entry.split()[2:]])
+	return res
 
 
 # This asks the user for the datafile that they want to extract features from.
