@@ -19,7 +19,7 @@ def extract_features(data):
 			vector.append(vector[0] - vector[1]) # word-2 - word-1
 			vector.append(vector[1] - vector[2]) # word-1 - word+1
 			vector.append(vector[2] - vector[3]) # word+1 = word+2
-			print(len(vector))
+			# print(vector)
 		res.append(vector)
 
 	# This changes the list of lists into a more compact array
@@ -30,7 +30,12 @@ def extract_features(data):
 def extract_keys(data):
 	res = []
 	for entry in data:
-		res.append([x[x.index('%'):] for x in entry[2:]])
+		print(entry)
+		if 'U' in entry.split()[2:]:
+			res.append([0,0,0]) # I'm making 0,0,0 the location of U
+		else:
+			res.append([[int(nums) for nums in x[x.index('%')+1:].split(':') if len(nums.strip()) > 0] for x in entry.split()[2:]])
+	return res
 
 
 # This asks the user for the datafile that they want to extract features from.
@@ -58,8 +63,22 @@ def get_input_file():
 	return f, tf
 
 
+def flatten(x,y):
+	flat_x = []
+	flat_y = []
+	for i, x, y in enumerate(zip(x, y)):
+		if len(test) > 1:
+			x.insert(i, x[i])
+			y[i] = y[i][0]
+			y.insert(i, ) #this isn't done and Idk what to put here, my brain is dying
+			flat_x.append()
+			flat_y.append()
+
+	return flat_x, flat_y
+
 
 def main():
+	train_X, train_Y = flatten(x = train_X, y = trainY)
 	# Read in dataset
 	print("Reading in dataset...")
 	train_text_data, train_Y = get_input_file()
@@ -73,13 +92,14 @@ def main():
 	# the [1:] is to exclude the first couple lines after splitting on <instance
 	train_X = extract_features(train_text_data.split('<instance')[1:])
 	test_X = extract_features(test_text_data)
-
+'''
 	# handle two answers
 	for i, train, test in enumerate(zip(train_X, train_Y)):
 		if len(test) > 1:
 			train_X.insert(i, train_X[i])
 			train_Y[i] = train_Y[i][0]
 			train_Y.insert(i, )
+'''
 
 
 	# instantiate model
