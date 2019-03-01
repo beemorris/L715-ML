@@ -32,10 +32,13 @@ def extract_keys(data):
     res = []
     for entry in data:
         #print(entry)
+        res.append(entry.split()[2:])
+        '''
         if 'U' in entry.split()[2:]:
             res.append([[0,0,0]]) # I'm making 0,0,0 the location of U
         else:
             res.append([[int(nums) for nums in x[x.index('%')+1:].split(':') if len(nums.strip()) > 0] for x in entry.split()[2:]])
+        '''
     return res
 
 
@@ -68,7 +71,7 @@ def flatten(x,y):
     flat_x = []
     flat_y = []
     for x_item, y_item in zip(x, y):
-        print(y_item)
+        # print(y_item)
         if len(y_item) > 1:
             flat_x.append(deepcopy(x_item))
             flat_y.append(deepcopy(y_item[0]))
@@ -98,6 +101,12 @@ def main():
     test_Y = extract_keys(test_Y)
     train_X, train_Y = flatten(x=train_X, y=train_Y)
     test_X, test_Y = flatten(x=test_X, y=test_Y)
+
+    # we have to reshape the array into a 2D model because sklearn
+    nsamples, nx, ny = train_X.shape
+    train_X = train_X.reshape((nsamples, nx * ny))
+    nsamples, nx, ny = test_X.shape
+    test_X = test_X.reshape((nsamples, nx * ny))
 
     # instantiate model
     svm_model = SVC(gamma='auto')
