@@ -33,7 +33,7 @@ def extract_keys(data):
     for entry in data:
         #print(entry)
         if 'U' in entry.split()[2:]:
-            res.append([0,0,0]) # I'm making 0,0,0 the location of U
+            res.append([[0,0,0]]) # I'm making 0,0,0 the location of U
         else:
             res.append([[int(nums) for nums in x[x.index('%')+1:].split(':') if len(nums.strip()) > 0] for x in entry.split()[2:]])
     return res
@@ -67,16 +67,16 @@ def get_input_file():
 def flatten(x,y):
     flat_x = []
     flat_y = []
-    for x, y in zip(x, y):
-        print(y)
-        if len(y) > 1:
-            flat_x.append(deepcopy(x))
-            flat_y.append(deepcopy(y[0]))
-            flat_x.append(deepcopy(x))
-            flat_y.append(deepcopy(y[1]))
+    for x_item, y_item in zip(x, y):
+        print(y_item)
+        if len(y_item) > 1:
+            flat_x.append(deepcopy(x_item))
+            flat_y.append(deepcopy(y_item[0]))
+            flat_x.append(deepcopy(x_item))
+            flat_y.append(deepcopy(y_item[1]))
         else:
-            flat_x.append(deepcopy(x))
-            flat_y.append(deepcopy(y[0]))
+            flat_x.append(deepcopy(x_item))
+            flat_y.append(deepcopy(y_item[0]))
     return np.stack(flat_x), np.stack(flat_y)
 
 
@@ -96,15 +96,8 @@ def main():
     train_Y = extract_keys(train_Y)
     test_X = extract_features(test_text_data.split('<instance')[1:])
     test_Y = extract_keys(test_Y)
-    #print('train:', train_X[0])
-    #print('test:', test_X[0])
-    for x in train_Y:
-        print(np.array(x).shape)
     train_X, train_Y = flatten(x=train_X, y=train_Y)
     test_X, test_Y = flatten(x=test_X, y=test_Y)
-
-    #print('train: ', train_X[0])
-    #print('test: ', test_X[0])
 
     # instantiate model
     svm_model = SVC(gamma='auto')
