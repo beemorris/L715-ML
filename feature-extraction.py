@@ -109,7 +109,7 @@ def main():
     test_X = test_X.reshape((nsamples, nx * ny))
 
     # instantiate model
-    svm_model = SVC(gamma='auto')
+    svm_model = SVC(gamma='scale', kernel='linear', class_weight='balanced')
     # model = GridSearchCV(svm_model)
     print("Training...")
     svm_model.fit(train_X, train_Y)
